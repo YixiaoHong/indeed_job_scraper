@@ -3,8 +3,10 @@ from bs4 import BeautifulSoup
 import time
 from IPython.display import HTML
 
+#build the url link with searching data scientist job in Toronto
 URL_1 = 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start'
 HTML(URL_1)
+job_counter = 0
 
 
 def get_all_search_pages(URL_1):
@@ -55,10 +57,15 @@ def scrape_job_info(job_search_results):
     for x in job_search_results:
         # extract the individual job posting link from a <div> tag
         # res = x.find('a')['href']
+        global job_counter
         title = x.find('div',{"class":"title"})
         job_href = title.find('a')['href']
+        job_title = title.find('a')['title']
         job_link = "https://www.indeed.ca" + job_href
-        print(job_link)
+        job_counter+=1
+        print("---------------------------------------------------------------------------------")
+        print("==>Job #",job_counter,": ",job_title)
+        print("==>Link:",job_link)
 
         # get the HTML code from the job posting page and save it as text to 'scraping_results_dict'
         # link to the job posting is used as a key and HTML code of the job posting as a value
@@ -87,6 +94,9 @@ def scrape_job_links_and_info(List_of_all_URLs):
 
 
 # run function 'scrape_job_links_and_info' to scrape every job posting from search results pages in 'List_of_all_URLs'
+print("==========================================")
+print("Soup Master on duty!===>")
+print("==========================================\n")
 scrape_job_links_and_info(List_of_all_URLs)
 print(len(scraping_results_dict),"job postings have been scraped and saved to 'scraping_results_dict'.")
 
