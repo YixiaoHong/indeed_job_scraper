@@ -3,9 +3,13 @@ from bs4 import BeautifulSoup
 import time
 from IPython.display import HTML
 
-#build the url link with searching data scientist job in Toronto
-URL_1 = 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start'
-HTML(URL_1)
+# build the url link with searching data scientist job in Toronto
+
+#This url below has many pages of job postings
+# URL_1 = 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start'
+# HTML(URL_1)
+#This url below has only 1 page of job postings
+URL_1 = 'https://ca.indeed.com/jobs?as_and=data+scientist+pro&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&as_src=&salary=&radius=25&l=Toronto&fromage=any&limit=20&sort=&psf=advsrch&from=advancedsearch'
 job_counter = 0
 
 
@@ -24,7 +28,10 @@ def get_all_search_pages(URL_1):
     total_results = int(num_results_str.split()[3].replace(',', ''))
 
     # add the common part between all search pages
-    next_pages_links = "https://www.indeed.ca" + soup_1.find('div', {'class': 'pagination'}).find('a').get('href')[:-2]
+    if soup_1.find('div', {'class': 'pagination'}) is not None:
+        next_pages_links = "https://www.indeed.ca" + soup_1.find('div', {'class': 'pagination'}).find('a').get('href')[:-2]
+    else:
+        next_pages_links = URL_1
 
     print(next_pages_links)
 
@@ -35,8 +42,9 @@ def get_all_search_pages(URL_1):
     List_of_all_URLs.append(next_pages_links)
 
     # add different starting positions for subsequent search results pages to 'List_of_all_URLs'
-    for start_position in range(20, total_results, 20):
-        List_of_all_URLs.append(next_pages_links + str(start_position))
+    if soup_1.find('div', {'class': 'pagination'}) is not None:
+        for start_position in range(20, total_results, 20):
+            List_of_all_URLs.append(next_pages_links + str(start_position))
 
     return List_of_all_URLs, total_results
 
@@ -58,7 +66,7 @@ def scrape_job_info(job_search_results):
         # extract the individual job posting link from a <div> tag
         # res = x.find('a')['href']
         global job_counter
-        title = x.find('div',{"class":"title"})
+        title = x.find('div',{'class':"title"})
         job_href = title.find('a')['href']
         job_title = title.find('a')['title']
         job_link = "https://www.indeed.ca" + job_href
