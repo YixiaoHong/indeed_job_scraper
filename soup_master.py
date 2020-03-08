@@ -5,17 +5,15 @@ import pandas as pd
 import numpy as np
 from IPython.display import HTML
 
-# build the url link with searching data scientist job in Toronto
-
-#This url below has many pages of job postings
-URL_1 = 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start'
-# HTML(URL_1)
-#This url below has only 1 page of job postings
-# URL_1 = 'https://ca.indeed.com/jobs?as_and=data+scientist+pro&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&as_src=&salary=&radius=25&l=Toronto&fromage=any&limit=20&sort=&psf=advsrch&from=advancedsearch'
-job_counter = 0
-
-
+#######################################################
+##########         Functions             ##############
+#######################################################
 def get_all_search_pages(URL_1):
+    '''
+    This function gets all job search results
+    :param URL_1:
+    :return:
+    '''
 
     # get the HTML of the first search results page
     r = requests.get(URL_1)
@@ -50,16 +48,12 @@ def get_all_search_pages(URL_1):
 
     return List_of_all_URLs, total_results
 
-
-List_of_all_URLs, total_results = get_all_search_pages(URL_1)
-print("\n{0} links with search results pages generated and saved to 'List_of_all_URLs'.".format(len(List_of_all_URLs)) +
-      " Search returned a total of {0} results\n".format(total_results))
-print(List_of_all_URLs)
-
-scraping_results_dict = {}  # this is a global dict used by 'scrape_job_info' to store scraping results to be parsed later
-
-
 def scrape_job_info(job_search_results):
+    '''
+    This function
+    :param job_search_results:
+    :return:
+    '''
 
     global scraping_results_dict  # dict used to store results of scraping
 
@@ -72,6 +66,8 @@ def scrape_job_info(job_search_results):
         global df
         global skills_keywords_dict
         global df_column_names
+        global current_search_location
+        global total_results
         title = x.find('div',{'class':"title"})
         job_href = title.find('a')['href']
         job_title = title.find('a')['title']
@@ -90,7 +86,7 @@ def scrape_job_info(job_search_results):
         temp_dict = dict(zip(df_column_names, [None]*len(df_column_names)))
         temp_dict['Job_Name'] = job_title
         temp_dict['Link'] = job_link
-
+        temp_dict['Job_Location'] = current_search_location
         #search the content to collect data
         for key in skills_keywords_dict:
             # 'Technical Skills'
@@ -109,7 +105,8 @@ def scrape_job_info(job_search_results):
         job_counter+=1
         print("---------------------------------------------------------------------------------")
         print("==>Job #",job_counter,": ",job_title)
-        print("==>Link:",job_link)
+        # print("==>Link:",job_link)
+        print("==>progress", job_counter, "/", total_results)
 
         # get the HTML code from the job posting page and save it as text to 'scraping_results_dict'
         # link to the job posting is used as a key and HTML code of the job posting as a value
@@ -118,7 +115,6 @@ def scrape_job_info(job_search_results):
 
         # sleep for 0.5 second, to avoid too many requests to the indeed.ca server
         time.sleep(0.5)
-
 
 def scrape_job_links_and_info(List_of_all_URLs):
 
@@ -137,45 +133,70 @@ def scrape_job_links_and_info(List_of_all_URLs):
     print("Done!")
 
 
-####################################################
-#build dataframe
+#######################################################
+##########           Main                ##############
+#######################################################
+
 skills_keywords_dict = {
-    'Technical Skills': {'Machine Learning': ['Machine Learning', 'ML', 'Predictive Modeling'],
-                         'Big Data': ['Big Data', 'Spark', 'kafka', 'Hive',
-                                      'beam', 'Hadoop', 'MapReduce', 'Hbase',
-                                      'Coudera', 'Hortonworks', 'Apache'],
-                         'NLP': ['Natural Language Processing', ' NLP ', ' NLP/', ' NLP,', ' NLP.'],
-                         'Visualisation': ['Visualisation', 'Visualization', 'Tableau', 'Power BI'],
-                         'Data Mining/Analytics': ['Data Mining', ' DM ', 'Analytics', 'Data Collection'],
-                         'Deep Learning': ['Deep Learning', 'Neural Networks', 'ANN', 'MLP', 'CNN', 'Tensorflow',
-                                           'Keras', 'Theano'],
-                         'Mathematics': ['probablity', 'probability theory', 'Mathematics', 'Algebra', 'Stochastic',
-                                         'Statistics'],
+    'Technical Skills': {
+        # 0. Basic Mathmatics
+        'Mathematics': ['Math'],
+        'Statistics': ['probability', 'Statistics', 'Stochastic'],
+        'Linear Algebra': ['Linear Algebra', 'Algebra', 'matrix'],
 
-                         'Object-oriented programming': ['Object-oriented', ' OOP ', ' OOP/', ' OOP,', ' OOP.'],
-                         'Python': ['Python'],
-                         'R': [' R ', ' R/', ' R,', ' R.'],
-                         'Java': [' Java ', 'JVM'],
-                         'Scala': ['Scala'],
-                         'C/C++': ['C/C++', 'C++', ' C ', 'C#'],
-                         'MATLAB': ['MATLAB'],
-                         'Excel': ['Excel', 'VBA', 'Pivot Table'],
-                         'SAS': [' SAS '],
-                         'SQL/databases': ['SQL', 'databases'],
-                         'NoSQL': ['NoSQL', 'Cassandra', 'MongoDB'],
-                         'SPSS': ['SPSS'],
-                         'Stata': ['Stata'],
+        # 1. Programming Language
+        'Python': ['Python'],
+        'R': [' R ', ' R/', ' R,', ' R.'],
+        'Java': [' Java ', 'JVM'],
+        'Scala': ['Scala'],
+        'C/C++': ['C/C++', 'C++', ' C ', 'C#'],
+        'MATLAB': ['MATLAB'],
+        'Excel': ['Excel', 'VBA', 'Pivot Table'],
+        'SAS': [' SAS '],
+        'Object-oriented programming': ['Object-oriented', ' OOP ', ' OOP/', ' OOP,', ' OOP.'],
 
-                         'AWS Cloud': ['AWS'],
-                         'Google Cloud': ['Google Cloud', 'GCP'],
-                         'Databricks': ['Databricks'],
-                         'Azure': ['Azure'],
-                         'IBM': ['IBM', 'Watson'],
-                         'API': [' API ', 'application program interface', ' API/', ' API,', ' APL.'],
+        # 2. Data Management
+        'SQL/databases': ['SQL', 'databases'],
+        'NoSQL': ['NoSQL', 'Cassandra', 'MongoDB'],
+        'SPSS': ['SPSS'],
+        'Stata': ['Stata'],
+        'Access': ['Access'],
+        'Data Mining/Analytics': ['Data Mining', ' DM ', 'Analytics', 'Data Collection'],
 
-                         'Operations research': ['Operations research'],
-                         'DevOps': ['DevOps', 'TDD', 'test-driven'],
-                         'Git': ['GitHub', 'Git', 'version control']},
+        # 3. Data Visulization
+        'Visualisation': ['Visualisation', 'Visualization', 'render'],
+        'Tableau': ['Tableau'],
+        'Power BI': ['Power BI'],
+        'Matplot': ['Matplot'],
+
+        # 4. Machine Learning
+        'Machine Learning': ['Machine Learning', 'ML', 'Predictive Modeling'],
+        'KNN': ['KNN', 'nearest neighbour', 'nearest neighbor'],
+        'SVM': ['SVM', 'Support Vector'],
+        'K-means': ['K-means', 'K means'],
+        'Multivariate Analysis': ['pca', 'principal component', 'pls'],
+        'Regression': ['Regression', 'Regressive'],
+        'Classification': ['Classification', 'Clustering'],
+        'NLP': ['Natural Language Processing', ' NLP ', ' NLP/', ' NLP,', ' NLP.'],
+        'Deep Learning': ['Deep Learning', 'Neural Networks', 'ANN', 'MLP', 'CNN', 'Tensorflow', 'Keras', 'Theano'],
+        'Time-series': ['Time-series', 'time series'],
+        'Simulation': ['simulation'],
+
+        # 5. Cloud Computing
+        'Big Data': ['Big Data', 'Spark', 'kafka', 'Hive',
+                     'beam', 'Hadoop', 'MapReduce', 'Hbase',
+                     'Coudera', 'Hortonworks', 'Apache'],
+        'AWS Cloud': ['AWS'],
+        'Google Cloud': ['Google Cloud', 'GCP'],
+        'Databricks': ['Databricks'],
+        'Azure': ['Azure'],
+        'IBM Cloud': ['IBM Cloud', 'Watson'],
+
+        # 6. DevOps
+        'API': [' API ', 'application program interface', ' API/', ' API,', ' APL.'],
+        'Operations research': ['Operations research'],
+        'DevOps': ['DevOps', 'TDD', 'test-driven'],
+        'Git': ['GitHub', 'Git', 'version control']},
 
     'softs skills': {'Critical Thinking': ['Critical', 'insight', 'perpective'],
                      'Effective Communication': ['communication', 'presentation', 'interpersonal', 'negotiation'],
@@ -192,7 +213,23 @@ skills_keywords_dict = {
                      'Consulting': ['consulting', 'consultant']}
 }
 
-df_column_names = ['Job_Name','Link']
+# build the url link with searching data scientist job in Toronto
+#This url below has many pages of job postings
+search_urls = {
+    'Data+Toronto' : 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start',
+    'Data+Vancouver' : 'https://ca.indeed.com/jobs?q=data+scientist&l=Vancouver&start',
+    'Data+Montreal' : 'https://ca.indeed.com/jobs?q=data+scientist&l=Montreal&start',
+}
+
+search_key = 'Data+Toronto'
+
+job_counter = 0
+List_of_all_URLs, total_results = get_all_search_pages(search_urls[search_key])
+print("\n{0} links with search results pages generated and saved to 'List_of_all_URLs'.".format(len(List_of_all_URLs)) + " Search returned a total of {0} results\n".format(total_results))
+
+scraping_results_dict = {}  # this is a global dict used by 'scrape_job_info' to store scraping results to be parsed later
+current_search_location = search_key.split("+")[1]
+df_column_names = ['Job_Name','Link','Job_Location']
 
 for key in skills_keywords_dict:
     for sub_key in skills_keywords_dict[key]:
@@ -208,5 +245,7 @@ print("==========================================\n")
 scrape_job_links_and_info(List_of_all_URLs)
 print(len(scraping_results_dict),"job postings have been scraped and saved to 'scraping_results_dict'.")
 print(df)
-df.to_csv(r'search_data.csv')
+file_name = search_key
+save_file_name = file_name+".csv"
+df.to_csv(save_file_name)
 
