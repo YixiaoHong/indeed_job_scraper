@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import pandas as pd
+import numpy as np
 from IPython.display import HTML
 
 # build the url link with searching data scientist job in Toronto
@@ -65,11 +67,14 @@ def scrape_job_info(job_search_results):
     for x in job_search_results:
         # extract the individual job posting link from a <div> tag
         # res = x.find('a')['href']
+
         global job_counter
+        global df
         title = x.find('div',{'class':"title"})
         job_href = title.find('a')['href']
         job_title = title.find('a')['title']
         job_link = "https://www.indeed.ca" + job_href
+        df = df.append({'Job_Name':job_title,'Link':job_link},ignore_index=True)
         job_counter+=1
         print("---------------------------------------------------------------------------------")
         print("==>Job #",job_counter,": ",job_title)
@@ -100,6 +105,8 @@ def scrape_job_links_and_info(List_of_all_URLs):
 
     print("Done!")
 
+#Append df
+df = pd.DataFrame(columns=['Job_Name','Link'])
 
 # run function 'scrape_job_links_and_info' to scrape every job posting from search results pages in 'List_of_all_URLs'
 print("==========================================")
@@ -107,4 +114,6 @@ print("Soup Master on duty!===>")
 print("==========================================\n")
 scrape_job_links_and_info(List_of_all_URLs)
 print(len(scraping_results_dict),"job postings have been scraped and saved to 'scraping_results_dict'.")
+print(df)
+df.to_csv(r'search_data.csv')
 
