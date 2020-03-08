@@ -16,8 +16,9 @@ for each_page in test_scraping_results_dict:
     print(page)
     content = page.text
     soup = BeautifulSoup(content, 'lxml')
-    main = soup.find('div',{"class":"jobsearch-JobComponent-description icl-u-xs-mt--md"})
-    if ("python" in str(main).lower()):
+    JobContent = soup.find('div', attrs={"class": "jobsearch-ViewJobLayout-jobDisplay"})
+    str_job = str(JobContent).lower()
+    if ("python" in str_job):  #Key word has to be lower letter!!!
         python_counter += 1
 print(python_counter)
 
