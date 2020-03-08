@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9920deea-8f64-40d9-9a0b-85e65b2a61ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playground.py" beforeDir="false" afterPath="$PROJECT_DIR$/playground.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/results.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/soup_master.py" beforeDir="false" afterPath="$PROJECT_DIR$/soup_master.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -144,7 +142,7 @@
       <workItem from="1582409830753" duration="115000" />
       <workItem from="1582413163281" duration="140000" />
       <workItem from="1582413545553" duration="617000" />
-      <workItem from="1583690255583" duration="2213000" />
+      <workItem from="1583690255583" duration="4691000" />
     </task>
     <task id="LOCAL-00001" summary="V1.1 search job content">
       <created>1583690849853</created>
@@ -153,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583690849853</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="V1.2 export to csv">
+      <created>1583692490182</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1583692490182</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,61 +166,73 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="V1.1 search job content" />
-    <option name="LAST_COMMIT_MESSAGE" value="V1.1 search job content" />
+    <MESSAGE value="V1.2 export to csv" />
+    <option name="LAST_COMMIT_MESSAGE" value="V1.2 export to csv" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="384" y="7" key="CommitChangelistDialog2" timestamp="1583690848784">
+    <state x="384" y="7" key="CommitChangelistDialog2" timestamp="1583692489207">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="384" y="7" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583690848784" />
+    <state x="384" y="7" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583692489207" />
     <state width="1534" height="440" key="DebuggerActiveHint" timestamp="1583690351452">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1534" height="440" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1583690351452" />
-    <state width="1493" height="244" key="GridCell.Tab.0.bottom" timestamp="1583692368227">
+    <state width="1493" height="458" key="GridCell.Tab.0.bottom" timestamp="1583693875842">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="244" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583692368227" />
-    <state width="1493" height="244" key="GridCell.Tab.0.center" timestamp="1583692368227">
+    <state width="1493" height="458" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583693875842" />
+    <state width="1493" height="458" key="GridCell.Tab.0.center" timestamp="1583693875842">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="244" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1583692368227" />
-    <state width="1493" height="244" key="GridCell.Tab.0.left" timestamp="1583692368227">
+    <state width="1493" height="458" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1583693875842" />
+    <state width="1493" height="458" key="GridCell.Tab.0.left" timestamp="1583693875842">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="244" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1583692368227" />
-    <state width="1493" height="244" key="GridCell.Tab.0.right" timestamp="1583692368227">
+    <state width="1493" height="458" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1583693875842" />
+    <state width="1493" height="458" key="GridCell.Tab.0.right" timestamp="1583693875842">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="244" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1583692368227" />
-    <state width="1493" height="161" key="GridCell.Tab.1.bottom" timestamp="1583691229065">
+    <state width="1493" height="458" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1583693875842" />
+    <state width="1493" height="161" key="GridCell.Tab.1.bottom" timestamp="1583693619383">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="161" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583691229065" />
-    <state width="1493" height="161" key="GridCell.Tab.1.center" timestamp="1583691229065">
+    <state width="1493" height="161" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583693619383" />
+    <state width="1493" height="161" key="GridCell.Tab.1.center" timestamp="1583693619383">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="161" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1583691229065" />
-    <state width="1493" height="161" key="GridCell.Tab.1.left" timestamp="1583691229065">
+    <state width="1493" height="161" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1583693619383" />
+    <state width="1493" height="161" key="GridCell.Tab.1.left" timestamp="1583693619383">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="161" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1583691229065" />
-    <state width="1493" height="161" key="GridCell.Tab.1.right" timestamp="1583691229065">
+    <state width="1493" height="161" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1583693619383" />
+    <state width="1493" height="161" key="GridCell.Tab.1.right" timestamp="1583693619383">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="161" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1583691229065" />
-    <state x="361" y="148" key="Vcs.Push.Dialog.v2" timestamp="1583690851347">
+    <state width="1493" height="161" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1583693619383" />
+    <state x="361" y="148" key="Vcs.Push.Dialog.v2" timestamp="1583692492054">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="148" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583690851347" />
+    <state x="361" y="148" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583692492054" />
     <state width="775" height="419" key="XDebugger.FullValuePopup" timestamp="1583691176963">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1583691176963" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/indeed_job_scraper$soup_lord.coverage" NAME="soup_lord Coverage Results" MODIFIED="1583690613215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/indeed_job_scraper$playground.coverage" NAME="playground Coverage Results" MODIFIED="1583691121427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/indeed_job_scraper$soup_master.coverage" NAME="soup_master Coverage Results" MODIFIED="1583692368219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/indeed_job_scraper$soup_master.coverage" NAME="soup_master Coverage Results" MODIFIED="1583693875834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

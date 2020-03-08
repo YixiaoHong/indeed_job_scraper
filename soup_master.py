@@ -8,10 +8,10 @@ from IPython.display import HTML
 # build the url link with searching data scientist job in Toronto
 
 #This url below has many pages of job postings
-# URL_1 = 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start'
+URL_1 = 'https://ca.indeed.com/jobs?q=data+scientist&l=Toronto&start'
 # HTML(URL_1)
 #This url below has only 1 page of job postings
-URL_1 = 'https://ca.indeed.com/jobs?as_and=data+scientist+pro&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&as_src=&salary=&radius=25&l=Toronto&fromage=any&limit=20&sort=&psf=advsrch&from=advancedsearch'
+# URL_1 = 'https://ca.indeed.com/jobs?as_and=data+scientist+pro&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&as_src=&salary=&radius=25&l=Toronto&fromage=any&limit=20&sort=&psf=advsrch&from=advancedsearch'
 job_counter = 0
 
 
@@ -70,11 +70,42 @@ def scrape_job_info(job_search_results):
 
         global job_counter
         global df
+        global skills_keywords_dict
+        global df_column_names
         title = x.find('div',{'class':"title"})
         job_href = title.find('a')['href']
         job_title = title.find('a')['title']
         job_link = "https://www.indeed.ca" + job_href
-        df = df.append({'Job_Name':job_title,'Link':job_link},ignore_index=True)
+
+        #Get into individual page
+        page = requests.get(job_link)
+        content = page.text
+        soup = BeautifulSoup(content, 'lxml')
+        JobContent = soup.find('div', attrs={"class": "jobsearch-ViewJobLayout-jobDisplay"})
+        str_job = str(JobContent).lower()
+
+
+
+        ##############insert df
+        temp_dict = dict(zip(df_column_names, [None]*len(df_column_names)))
+        temp_dict['Job_Name'] = job_title
+        temp_dict['Link'] = job_link
+
+        #search the content to collect data
+        for key in skills_keywords_dict:
+            # 'Technical Skills'
+            for sub_key in skills_keywords_dict[key]:
+                #'Machine Learning'
+                key_words_list =skills_keywords_dict[key][sub_key]
+                # ['Machine Learning', 'ML','Predictive Modeling']
+                for key_word in key_words_list:
+                    key_word_lower = key_word.lower()
+                    if (key_word_lower in str_job):  # Key word has to be lower letter!!!
+                        temp_dict[sub_key] = 1
+                        break
+
+        ##insert
+        df = df.append(temp_dict,ignore_index=True)
         job_counter+=1
         print("---------------------------------------------------------------------------------")
         print("==>Job #",job_counter,": ",job_title)
@@ -105,8 +136,70 @@ def scrape_job_links_and_info(List_of_all_URLs):
 
     print("Done!")
 
+
+####################################################
+#build dataframe
+skills_keywords_dict = {
+    'Technical Skills': {'Machine Learning': ['Machine Learning', 'ML', 'Predictive Modeling'],
+                         'Big Data': ['Big Data', 'Spark', 'kafka', 'Hive',
+                                      'beam', 'Hadoop', 'MapReduce', 'Hbase',
+                                      'Coudera', 'Hortonworks', 'Apache'],
+                         'NLP': ['Natural Language Processing', 'NLP'],
+                         'Visualisation': ['Visualisation', 'Visualization', 'Tableau', 'Power BI'],
+                         'Data Mining/Analytics': ['Data Mining', 'DM', 'Analytics', 'Data Collection'],
+                         'Deep Learning': ['Deep Learning', 'Neural Networks', 'ANN', 'MLP', 'CNN', 'Tensorflow',
+                                           'Keras', 'Theano'],
+                         'Mathematics': ['probablity', 'probability theory', 'Mathematics', 'Algebra', 'Stochastic',
+                                         'Statistics'],
+
+                         'Object-oriented programming': ['Object-oriented', 'OOP'],
+                         'Python': ['Python'],
+                         'R': [' R ', ' R/', ' R,', ' R.'],
+                         'Java': [' Java ', 'JVM'],
+                         'Scala': ['Scala'],
+                         'C/C++': ['C/C++', 'C++', ' C ', 'C#'],
+                         'MATLAB': ['MATLAB'],
+                         'Excel': ['Excel', 'VBA', 'Pivot Table'],
+                         'SAS': ['SAS'],
+                         'SQL/databases': ['SQL', 'databases', 'Access', 'Oracle'],
+                         'NoSQL': ['NoSQL', 'Cassandra', 'MongoDB'],
+                         'SPSS': ['SPSS'],
+                         'Stata': ['Stata'],
+
+                         'AWS Cloud': ['AWS'],
+                         'Google Cloud': ['Google Cloud', 'GCP'],
+                         'Databricks': ['Databricks'],
+                         'Azure': ['Azure'],
+                         'IBM': ['IBM', 'Watson'],
+                         'API': [' API ', 'application program interface', ' API/', ' API,', ' APL.'],
+
+                         'Operations research': ['Operations research'],
+                         'DevOps': ['DevOps', 'TDD', 'test-driven'],
+                         'Git': ['GitHub', 'Git', 'version control']},
+
+    'softs skills': {'Critical Thinking': ['Critical', 'insight', 'perpective'],
+                     'Effective Communication': ['communication', 'presentation', 'interpersonal', 'negotiation'],
+                     'Problem Solving': ['problem solving', 'problem-solving'],
+                     'Team building': ['Team leadership', 'team building', 'team player'],
+                     'Work Ethic': ['ethic'],
+                     'Project Management': ['project management', 'project_management'],
+                     'Time Management': ['Time Management', 'Prioritization'],
+                     'Management': ['management', 'Data management'],
+                     'Innovation': ['innovation', 'innovative', 'curiosity'],
+                     'Leadership': ['Leadership'],
+                     'SDLC': ['SDLC', 'sdlc', 'software development', 'lifecycle'],
+                     'Decision Making': ['decision-making', 'decision analysis'],
+                     'Consulting': ['consulting', 'consultant']}
+}
+
+df_column_names = ['Job_Name','Link']
+
+for key in skills_keywords_dict:
+    for sub_key in skills_keywords_dict[key]:
+        df_column_names.append(sub_key)
+
 #Append df
-df = pd.DataFrame(columns=['Job_Name','Link'])
+df = pd.DataFrame(columns=df_column_names)
 
 # run function 'scrape_job_links_and_info' to scrape every job posting from search results pages in 'List_of_all_URLs'
 print("==========================================")
